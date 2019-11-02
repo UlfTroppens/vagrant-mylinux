@@ -1,0 +1,19 @@
+$script = <<SCRIPT
+echo '=====> Installing git'
+yum install -y git
+echo '=====> Installing ansible'
+yum install -y ansible
+SCRIPT
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "centos/7"
+  config.vm.provision "shell", inline: $script
+
+  # DNS Not Working
+  # https://www.vagrantup.com/docs/virtualbox/common-issues.html
+  # https://serverfault.com/questions/453185/vagrant-virtualbox-dns-10-0-2-3-not-working
+  config.vm.provider :virtualbox do |vb|
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+  end
+
+end
