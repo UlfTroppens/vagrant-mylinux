@@ -1,12 +1,14 @@
 $script = <<SCRIPT
 echo '=====> Installing git'
-yum install -y git
+dnf install -y git
+echo '=====> Enable EPEL repo (required for Ansible)'
+dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
 echo '=====> Installing ansible'
-yum install -y ansible
+dnf install -y ansible
 SCRIPT
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "centos/7"
+  config.vm.box = "centos/8"
   config.vm.provision "shell", inline: $script
 
   # DNS Not Working
