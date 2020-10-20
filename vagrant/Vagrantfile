@@ -5,6 +5,10 @@ echo '=====> Enable EPEL repo (required for Ansible)'
 dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
 echo '=====> Installing ansible'
 dnf install -y ansible
+echo '=====> Update RPMs'
+dnf update -y
+echo '====> Shutdown server'
+shutdown -h now
 SCRIPT
 
 Vagrant.configure("2") do |config|

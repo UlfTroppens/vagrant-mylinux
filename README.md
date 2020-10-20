@@ -5,6 +5,7 @@ Launch Linux server via Vagrant
 
 ### Base Image
 - Base box image: "centos/8"
+- Update all RPMs
 
 ### Additional RPMs
 - git
