@@ -7,6 +7,14 @@ echo '=====> Enable EPEL repo (required for Ansible)'
 dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
 echo '=====> Installing ansible'
 dnf install -y ansible
+echo '=====> Configure root ssh to localhost'
+ssh-keygen -b 4096 -P "" -f /root/.ssh/id_rsa
+touch /root/.ssh/known_hosts
+chmod 600 /root/.ssh/known_hosts
+ssh-keyscan localhost >> /root/.ssh/known_hosts
+touch /root/.ssh/authorized_keys
+chmod 600 /root/.ssh/authorized_keys
+cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
 echo '=====> Update RPMs'
 dnf update -y
 echo '====> Shutdown server'
