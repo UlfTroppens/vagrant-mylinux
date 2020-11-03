@@ -1,4 +1,10 @@
 $script = <<SCRIPT
+echo '=====> Installing cloud utils'
+dnf install -y cloud-utils-growpart
+echo '=====> Grow partition which contains root fs'
+growpart /dev/sda 1
+echo '=====> Grow root fs'
+xfs_growfs /
 echo '=====> Installing git'
 dnf install -y git
 echo '=====> Clone https://github.com/troppens/ansible-mylinux'
@@ -23,6 +29,7 @@ SCRIPT
 
 Vagrant.configure("2") do |config|
   config.vm.box = "centos/8"
+  config.disksize.size = '20GB'
   config.vm.provision "shell", inline: $script
 
   # DNS Not Working
