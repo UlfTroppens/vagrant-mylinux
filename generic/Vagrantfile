@@ -27,18 +27,38 @@ echo '====> Shutdown server'
 shutdown -h now
 SCRIPT
 
+
 Vagrant.configure("2") do |config|
   config.vm.box = "centos/8"
   config.disksize.size = '20GB'
   config.vm.provision "shell", inline: $script
 
-  # DNS Not Working
-  # https://www.vagrantup.com/docs/virtualbox/common-issues.html
-  # https://serverfault.com/questions/453185/vagrant-virtualbox-dns-10-0-2-3-not-working
+  # Tune VM
   config.vm.provider :virtualbox do |vb|
     vb.memory = 4096
     vb.cpus = 4
+
+    # Virtualisation acceleration
+    vb.customize ["modifyvm", :id, "--nested-hw-virt", "on"]
+    vb.customize ["modifyvm", :id, "--vtxvpid", "on"]
+    vb.customize ["modifyvm", :id, "--largepages", "on"]
+
+    # Graphics controller
+    vb.customize ["modifyvm", :id, "--graphicscontroller", "vmsvga"]
+    vb.customize ["modifyvm", :id, "--vram", "128"]
+
+    # Convenience
+    vb.customize ["modifyvm", :id, "--clipboard-mode", "bidirectional"]
+    vb.customize ["modifyvm", :id, "--draganddrop", "bidirectional"]
+
+    # Clock synchronisation
+    vb.customize ["modifyvm", :id, "--rtcuseutc", "off"]
+
+    # DNS Not Working
+    # https://www.vagrantup.com/docs/virtualbox/common-issues.html
+    # https://serverfault.com/questions/453185/vagrant-virtualbox-dns-10-0-2-3-not-working
     vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+
   end
 
 end
