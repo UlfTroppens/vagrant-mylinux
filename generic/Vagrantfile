@@ -29,6 +29,8 @@ Vagrant.configure("2") do |config|
   # https://www.vagrantup.com/docs/virtualbox/common-issues.html
   # https://serverfault.com/questions/453185/vagrant-virtualbox-dns-10-0-2-3-not-working
   config.vm.provider :virtualbox do |vb|
+    vb.memory = 4096
+    vb.cpus = 4
     vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
   end
 
